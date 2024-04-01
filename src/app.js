@@ -1,9 +1,13 @@
-const express = require('express')
+const express = require("express")
+
+const { connectDB } = require("./config")
 
 const app = express()
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
+connectDB()
+
+app.get("/", (req, res) => {
+	res.send("Hello World!")
 })
 
 module.exports = app
