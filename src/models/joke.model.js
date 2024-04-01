@@ -5,6 +5,14 @@ const jokeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  like_votes: {
+    type: Number,
+    default: 0,
+  },
+  dislike_votes: {
+    type: Number,
+    default: 0,
+  },
   created_at: {
     type: Date,
     default: Date.now,
