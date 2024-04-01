@@ -1,6 +1,8 @@
 const path = require("path")
 
-require("dotenv").config({ path: path.join(__dirname, "../../.env.development") })
+const envPath = (NODE_ENV) => path.join(__dirname, `../../.env.${NODE_ENV}`)
+
+require("dotenv").config({ path: envPath(process.env.NODE_ENV) })
 
 module.exports = {
 	PORT: process.env.PORT,
