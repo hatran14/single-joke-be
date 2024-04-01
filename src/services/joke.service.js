@@ -10,13 +10,9 @@ class JokeService {
 	 * @throws {Error} Throws an error if there's an issue creating the joke.
 	 */
 	async createJoke(joke) {
-		try {
-			const newJoke = new Joke(joke)
-			const savedJoke = await newJoke.save()
-			return savedJoke
-		} catch (error) {
-			throw error
-		}
+		const newJoke = new Joke(joke)
+		const savedJoke = await newJoke.save()
+		return savedJoke
 	}
 }
 
