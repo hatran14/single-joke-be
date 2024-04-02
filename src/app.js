@@ -20,7 +20,11 @@ const swaggerSpec = swaggerJSDoc(swaggerOptions)
 app.use(
 	"/api-docs",
 	swaggerUI.serve,
-	swaggerUI.setup(swaggerSpec, { customCssUrl: SWAGGER_UI_URL })
+	swaggerUI.setup(swaggerSpec, {
+		customCss:
+			".swagger-ui .opblock .opblock-summary-path-description-wrapper { align-items: center; display: flex; flex-wrap: wrap; gap: 0 10px; padding: 0 10px; width: 100%; }",
+		customCssUrl: SWAGGER_UI_URL,
+	})
 )
 
 app.get("/", (req, res) => {
