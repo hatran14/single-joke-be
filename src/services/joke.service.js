@@ -1,3 +1,4 @@
+const { BadRequest, NotFoundResponse } = require("../common/error.response")
 const { Joke } = require("../models")
 const { ObjectId } = require("mongodb")
 
@@ -23,7 +24,7 @@ class JokeService {
 	async getRandomJoke(votedJokes = []) {
 		votedJokes = votedJokes.map((jokeId) => {
       if (ObjectId.isValid(jokeId) === false) {
-        throw new Error("Invalid joke ID")
+        throw new BadRequest("Invalid joke ID")
       }
 			return new ObjectId(jokeId)
 		})
@@ -42,13 +43,16 @@ class JokeService {
 	 */
 	async likeJoke(jokeId) {
     if (ObjectId.isValid(jokeId) === false) {
-      throw new Error("Invalid joke ID")
+      throw new BadRequest("Invalid joke ID")
     }
 		const likedJoke = await Joke.findOneAndUpdate(
 			{ _id: jokeId },
 			{ $inc: { like_votes: 1 } },
 			{ new: true }
 		)
+    if (!likedJoke) {
+      throw new NotFoundResponse("Joke not found")
+    }
 		return likedJoke
 	}
 
@@ -60,13 +64,16 @@ class JokeService {
 	 */
 	async dislikeJoke(jokeId) {
     if (ObjectId.isValid(jokeId) === false) {
-      throw new Error("Invalid joke ID")
+      throw new BadRequest("Invalid joke ID")
     }
 		const dislikedJoke = await Joke.findOneAndUpdate(
 			{ _id: jokeId },
 			{ $inc: { dislike_votes: 1 } },
 			{ new: true }
 		)
+    if (!dislikedJoke) {
+      throw new NotFoundResponse("Joke not found")
+    }
 		return dislikedJoke
 	}
 }

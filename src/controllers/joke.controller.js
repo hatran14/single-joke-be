@@ -1,39 +1,41 @@
+const { SuccessResponse, BadRequest } = require("../common/error.response")
+const { CreatedResponse } = require("../common/success.response")
 const { JokeService } = require("../services")
 
 class JokeController {
 	async createJoke(req, res) {
 		const { text } = req.body || {}
-    if (!text) {
-      throw new Error("Joke text is required")
-    }
+		if (!text) {
+			throw new BadRequest("Joke text is required")
+		}
 		const joke = await JokeService.createJoke(req.body)
-		return res.status(201).json(joke)
+		return new CreatedResponse({ metadata: joke }).send({ res })
 	}
-  
-  async getRandomJoke(req, res) {
-    let { votedJokes } = req.query || {}
-    votedJokes = JSON.parse(votedJokes || "[]")
-    const joke = await JokeService.getRandomJoke(votedJokes)
-    return res.status(200).json(joke)
-  }
 
-  async likeJoke(req, res) {
-    const { jokeId } = req.params || {}
-    if (!jokeId) {
-      throw new Error("Joke ID is required")
-    }
-    const likedJoke = await JokeService.likeJoke(jokeId)
-    return res.status(200).json(likedJoke)
-  }
+	async getRandomJoke(req, res) {
+		let { votedJokes } = req.query || {}
+		votedJokes = JSON.parse(votedJokes || "[]")
+		const joke = await JokeService.getRandomJoke(votedJokes)
+		return new SuccessResponse({ metadata: joke }).send({ res })
+	}
 
-  async dislikeJoke(req, res) {
-    const { jokeId } = req.params || {}
-    if (!jokeId) {
-      throw new Error("Joke ID is required")
-    }
-    const dislikedJoke = await JokeService.dislikeJoke(jokeId)
-    return res.status(200).json(dislikedJoke)
-  }
+	async likeJoke(req, res) {
+		const { jokeId } = req.params || {}
+		if (!jokeId) {
+			throw new BadRequest("Joke ID is required")
+		}
+		const likedJoke = await JokeService.likeJoke(jokeId)
+		return new SuccessResponse({ metadata: likedJoke }).send({ res })
+	}
+
+	async dislikeJoke(req, res) {
+		const { jokeId } = req.params || {}
+		if (!jokeId) {
+			throw new BadRequest("Joke ID is required")
+		}
+		const dislikedJoke = await JokeService.dislikeJoke(jokeId)
+		return new SuccessResponse({ metadata: dislikedJoke }).send({ res })
+	}
 }
 
 module.exports = JokeController
