@@ -11,8 +11,8 @@ class JokeController {
 	}
   
   async getRandomJoke(req, res) {
-    const { votedJokes } = req.body || {}
-    console.log("🚀 ~ JokeController ~ getRandomJoke ~ votedJokes:", votedJokes)
+    let { votedJokes } = req.query || {}
+    votedJokes = JSON.parse(votedJokes || "[]")
     const joke = await JokeService.getRandomJoke(votedJokes)
     return res.status(200).json(joke)
   }
