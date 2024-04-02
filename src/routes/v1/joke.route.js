@@ -78,6 +78,8 @@ router.post("/", asyncHandler(JokeController.createJoke));
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Joke'
+ *      400:
+ *        description: Invalid joke ID
  *      500:
  *        description: Internal Server Error
  */
@@ -108,6 +110,8 @@ router.get("/random", asyncHandler(JokeController.getRandomJoke));
  *                message:
  *                  type: string
  *                  example: Joke liked successfully
+ *      400:
+ *        description: Invalid joke ID
  *      404:
  *        description: Joke not found
  *      500:
@@ -139,6 +143,8 @@ router.put("/:jokeId/like", asyncHandler(JokeController.likeJoke));
  *                message:
  *                  type: string
  *                  example: Joke disliked successfully
+ *      400:
+ *        description: Invalid joke ID
  *      404:
  *        description: Joke not found
  *      500:
