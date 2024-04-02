@@ -64,6 +64,13 @@ router.post("/", asyncHandler(JokeController.createJoke));
  *  get:
  *    summary: Get a random joke
  *    tags: [Jokes]
+ *    parameters:
+ *      - in: query
+ *        name: votedJokes
+ *        description: An array of joke IDs that the user has already voted on
+ *        required: true
+ *        schema:
+ *          type: string
  *    responses:
  *      200:
  *        description: A random joke object
@@ -74,6 +81,7 @@ router.post("/", asyncHandler(JokeController.createJoke));
  *      500:
  *        description: Internal Server Error
  */
+
 router.get("/random", asyncHandler(JokeController.getRandomJoke));
 
 /**
