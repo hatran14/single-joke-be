@@ -10,12 +10,18 @@ const { errorHandler } = require("./middlewares")
 const { connectDB, swaggerOptions } = require("./config")
 const { v1 } = require("./routes")
 
+const SWAGGER_UI_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css"
+
 const app = express()
 
 connectDB()
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions)
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec))
+app.use(
+	"/api-docs",
+	swaggerUI.serve,
+	swaggerUI.setup(swaggerSpec, { customCssUrl: SWAGGER_UI_URL })
+)
 
 app.get("/", (req, res) => {
 	res.send("Hello World!")
