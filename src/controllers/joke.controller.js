@@ -25,6 +25,15 @@ class JokeController {
     const likedJoke = await JokeService.likeJoke(jokeId)
     return res.status(200).json(likedJoke)
   }
+
+  async dislikeJoke(req, res) {
+    const { jokeId } = req.params || {}
+    if (!jokeId) {
+      throw new Error("Joke ID is required")
+    }
+    const dislikedJoke = await JokeService.dislikeJoke(jokeId)
+    return res.status(200).json(dislikedJoke)
+  }
 }
 
 module.exports = JokeController

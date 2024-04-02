@@ -43,6 +43,21 @@ class JokeService {
 		)
     return likedJoke
 	}
+
+  /**
+   * Increment the dislike_votes count for a joke.
+   * @async
+   * @param {string} jokeId - The ID of the joke to be disliked.
+   * @returns {Promise<Object>} A promise that resolves to the updated joke object.
+   */
+  async dislikeJoke(jokeId) {
+    const dislikedJoke = await Joke.findOneAndUpdate(
+      { _id: jokeId },
+      { $inc: { dislike_votes: 1 } },
+      { new: true }
+    )
+    return dislikedJoke
+  }
 }
 
 module.exports = JokeService

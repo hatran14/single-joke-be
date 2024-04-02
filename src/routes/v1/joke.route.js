@@ -7,5 +7,6 @@ const router = Router()
 router.post("/", asyncHandler(JokeController.createJoke))
 router.get("/random", asyncHandler(JokeController.getRandomJoke))
 router.put("/:jokeId/like", asyncHandler(JokeController.likeJoke))
+router.put("/:jokeId/dislike", asyncHandler(JokeController.dislikeJoke))
 
 module.exports = router
