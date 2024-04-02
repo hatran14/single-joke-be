@@ -1,5 +1,5 @@
-const { SuccessResponse, BadRequest } = require("../common/error.response")
-const { CreatedResponse } = require("../common/success.response")
+const { BadRequest } = require("../common/error.response")
+const { CreatedResponse, SuccessResponse } = require("../common/success.response")
 const { JokeService } = require("../services")
 
 class JokeController {
