@@ -21,7 +21,12 @@ class JokeService {
 	 * @returns {Promise<Object>} A promise that resolves to a random joke object.
 	 */
 	async getRandomJoke(votedJokes = []) {
-		votedJokes = votedJokes.map((jokeId) => new ObjectId(jokeId))
+		votedJokes = votedJokes.map((jokeId) => {
+      if (ObjectId.isValid(jokeId) === false) {
+        throw new Error("Invalid joke ID")
+      }
+			return new ObjectId(jokeId)
+		})
 		const joke = await Joke.aggregate([
 			{ $match: { _id: { $nin: votedJokes } } },
 			{ $sample: { size: 1 } },
@@ -29,35 +34,41 @@ class JokeService {
 		return joke[0]
 	}
 
-  /**
-   * Increment the like_votes count for a joke.
-   * @async
-   * @param {string} jokeId - The ID of the joke to be liked.
-   * @returns {Promise<Object>} A promise that resolves to the updated joke object.
-   */
+	/**
+	 * Increment the like_votes count for a joke.
+	 * @async
+	 * @param {string} jokeId - The ID of the joke to be liked.
+	 * @returns {Promise<Object>} A promise that resolves to the updated joke object.
+	 */
 	async likeJoke(jokeId) {
+    if (ObjectId.isValid(jokeId) === false) {
+      throw new Error("Invalid joke ID")
+    }
 		const likedJoke = await Joke.findOneAndUpdate(
 			{ _id: jokeId },
 			{ $inc: { like_votes: 1 } },
 			{ new: true }
 		)
-    return likedJoke
+		return likedJoke
 	}
 
-  /**
-   * Increment the dislike_votes count for a joke.
-   * @async
-   * @param {string} jokeId - The ID of the joke to be disliked.
-   * @returns {Promise<Object>} A promise that resolves to the updated joke object.
-   */
-  async dislikeJoke(jokeId) {
-    const dislikedJoke = await Joke.findOneAndUpdate(
-      { _id: jokeId },
-      { $inc: { dislike_votes: 1 } },
-      { new: true }
-    )
-    return dislikedJoke
-  }
+	/**
+	 * Increment the dislike_votes count for a joke.
+	 * @async
+	 * @param {string} jokeId - The ID of the joke to be disliked.
+	 * @returns {Promise<Object>} A promise that resolves to the updated joke object.
+	 */
+	async dislikeJoke(jokeId) {
+    if (ObjectId.isValid(jokeId) === false) {
+      throw new Error("Invalid joke ID")
+    }
+		const dislikedJoke = await Joke.findOneAndUpdate(
+			{ _id: jokeId },
+			{ $inc: { dislike_votes: 1 } },
+			{ new: true }
+		)
+		return dislikedJoke
+	}
 }
 
 module.exports = JokeService
