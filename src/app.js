@@ -3,13 +3,18 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
+const swaggerUI = require("swagger-ui-express");
+const swaggerJSDoc = require('swagger-jsdoc');
 
-const { connectDB } = require("./config")
+const { connectDB, swaggerOptions } = require("./config")
 const { v1 } = require("./routes")
 
 const app = express()
 
 connectDB()
+
+const swaggerSpec = swaggerJSDoc(swaggerOptions)
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 app.get("/", (req, res) => {
 	res.send("Hello World!")
